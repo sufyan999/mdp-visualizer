@@ -3,27 +3,26 @@ import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, RotateCcw, Play, StepForward
 import { createInitialGrid, performValueIteration, performPolicyIteration } from './utils/mdpLogic';
 import './index.css';
 
-// 1. Helper to determine cell background color (Standard CSS approach)
+
 const getCellStyle = (value, type) => {
   if (type === 'wall') return { backgroundColor: '#1f2937', color: '#fff' }; // Dark gray
   if (type === 'goal') return { backgroundColor: '#22c55e', color: '#fff' }; // Green
   if (type === 'trap') return { backgroundColor: '#ef4444', color: '#fff' }; // Red
   
-  // Heatmap Logic: Interpolate color based on value
-  // Max value ~10 (Goal), Min value ~-10 (Trap)
+
   const maxVal = 10;
   let r = 255, g = 255, b = 255;
   
   if (value > 0) {
-    // Green tint for positive
+
     const intensity = Math.min(1, value / maxVal);
     r = Math.round(255 - (255 * intensity)); 
     b = Math.round(255 - (255 * intensity));
-    // g stays 255 for light green, or reduce it slightly for darker green
+
     g = 255; 
     return { backgroundColor: `rgb(${r}, ${200 + (55 * (1-intensity))}, ${b})`, color: '#000' };
   } else if (value < 0) {
-    // Red tint for negative
+
     const intensity = Math.min(1, Math.abs(value) / maxVal);
     g = Math.round(255 - (255 * intensity));
     b = Math.round(255 - (255 * intensity));
@@ -91,7 +90,7 @@ const App = () => {
       <div className="main-card">
         <header className="header">
           <h1>MDP Visualizer</h1>
-          <p>Assignment #2: Value & Policy Iteration</p>
+          <p>Value & Policy Iteration</p>
         </header>
 
         <div className="controls-section">

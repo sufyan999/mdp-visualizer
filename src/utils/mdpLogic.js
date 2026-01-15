@@ -1,11 +1,10 @@
-// Constants from the assignment
 export const ROWS = 4;
 export const COLS = 4;
-export const STEP_REWARD = -0.1; // [cite: 16]
-export const GOAL_REWARD = 10;   // [cite: 14]
-export const TRAP_REWARD = -10;  // [cite: 15]
+export const STEP_REWARD = -0.1;
+export const GOAL_REWARD = 10; 
+export const TRAP_REWARD = -10;
 
-// Initial Grid Setup
+
 export const createInitialGrid = () => {
   const grid = [];
   for (let r = 0; r < ROWS; r++) {
@@ -15,7 +14,6 @@ export const createInitialGrid = () => {
       let value = 0;
       let isTerminal = false;
 
-      // Hardcoding a map layout for demonstration
       if (r === 0 && c === 3) { type = 'goal'; value = GOAL_REWARD; isTerminal = true; }
       else if (r === 1 && c === 3) { type = 'trap'; value = TRAP_REWARD; isTerminal = true; }
       else if (r === 1 && c === 1) { type = 'wall'; value = 0; }
@@ -27,10 +25,8 @@ export const createInitialGrid = () => {
   return grid;
 };
 
-// Actions [cite: 11]
 const ACTIONS = ['UP', 'DOWN', 'LEFT', 'RIGHT'];
 
-// Transition Model (Stochastic: 80% intended, 10% left, 10% right) 
 const getTransitions = (r, c, action, grid) => {
   const moves = {
     'UP': { dr: -1, dc: 0 },
@@ -39,11 +35,9 @@ const getTransitions = (r, c, action, grid) => {
     'RIGHT': { dr: 0, dc: 1 },
   };
 
-  // Helper to check if a move hits a wall or boundary
   const getNextState = (act) => {
     let nr = r + moves[act].dr;
     let nc = c + moves[act].dc;
-    // If out of bounds or wall, stay in same spot
     if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS || grid[nr][nc].type === 'wall') {
       return { r, c };
     }
@@ -72,13 +66,11 @@ const getTransitions = (r, c, action, grid) => {
   return results;
 };
 
-// Calculate Q-Value for a state and action
 const calculateQValue = (r, c, action, grid, gamma) => {
   const transitions = getTransitions(r, c, action, grid);
   let qValue = 0;
   
   transitions.forEach(({ prob, r: nr, c: nc }) => {
-    // Reward is step reward unless we landed in terminal
     const reward = STEP_REWARD; 
     const nextVal = grid[nr][nc].value;
     qValue += prob * (reward + gamma * nextVal);
@@ -109,7 +101,7 @@ export const performValueIteration = (grid, gamma) => {
       });
 
       newGrid[r][c].value = bestValue;
-      newGrid[r][c].policy = bestPolicy; // Update policy greedily
+      newGrid[r][c].policy = bestPolicy;
       maxChange = Math.max(maxChange, Math.abs(bestValue - cell.value));
     }
   }
@@ -117,24 +109,23 @@ export const performValueIteration = (grid, gamma) => {
 };
 
 // Policy Iteration Step 
-// Simplified: Does one sweep of Policy Evaluation + Policy Improvement
 export const performPolicyIteration = (grid, gamma) => {
   const newGrid = grid.map(row => row.map(cell => ({ ...cell })));
   
-  // 1. Policy Evaluation (Update values based on current policy)
-  for (let i = 0; i < 5; i++) { // Run a few eval steps per main step for stability
+
+  for (let i = 0; i < 5; i++) { 
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
         const cell = newGrid[r][c];
         if (cell.isTerminal || cell.type === 'wall') continue;
         
-        // Value is strictly determined by current policy action
+
         cell.value = calculateQValue(r, c, cell.policy, newGrid, gamma);
       }
     }
   }
 
-  // 2. Policy Improvement (Update policy based on new values)
+
   let policyChanged = false;
   for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {

@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+
 * {
   box-sizing: border-box;
 }
@@ -11,7 +11,7 @@ body {
   min-height: 100vh;
 }
 
-/* App Container */
+
 .app-container {
   display: flex;
   justify-content: center;
@@ -27,7 +27,7 @@ body {
   padding: 30px;
 }
 
-/* Header */
+
 .header {
   text-align: center;
   margin-bottom: 30px;
@@ -37,7 +37,7 @@ body {
 
 .header h1 {
   margin: 0;
-  color: #1e3a8a; /* Dark Blue */
+  color: #1e3a8a;
   font-size: 2rem;
 }
 
@@ -46,7 +46,7 @@ body {
   color: #666;
 }
 
-/* Controls Section */
+
 .controls-section {
   display: flex;
   flex-wrap: wrap;
@@ -74,7 +74,7 @@ body {
   gap: 15px;
 }
 
-/* Inputs */
+
 .input-group {
   display: flex;
   flex-direction: column;
@@ -93,7 +93,7 @@ select, input[type="range"] {
   width: 100%;
 }
 
-/* Buttons */
+
 .button-row {
   display: flex;
   gap: 10px;
@@ -130,7 +130,7 @@ select, input[type="range"] {
   margin: 5px 0 0;
 }
 
-/* Grid Board */
+
 .grid-container {
   display: flex;
   justify-content: center;
@@ -159,7 +159,7 @@ select, input[type="range"] {
   transition: background-color 0.3s ease;
 }
 
-/* Cell Internals */
+
 .label {
   position: absolute;
   top: 4px;
@@ -179,7 +179,7 @@ select, input[type="range"] {
   opacity: 0.7;
 }
 
-/* Legend */
+
 .legend {
   display: flex;
   justify-content: center;
